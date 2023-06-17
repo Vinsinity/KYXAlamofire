@@ -25,24 +25,43 @@
 
 import PackageDescription
 
-let package = Package(name: "Alamofire",
-                      platforms: [.macOS(.v10_13),
-                                  .iOS(.v11),
-                                  .tvOS(.v11),
-                                  .watchOS(.v4)],
-                      products: [.library(name: "Alamofire",
-                                          targets: ["Alamofire"])],
-                      targets: [.target(name: "Alamofire",
-                                        path: "Source",
-                                        exclude: ["Info.plist"],
-                                        linkerSettings: [.linkedFramework("CFNetwork",
-                                                                          .when(platforms: [.iOS,
-                                                                                            .macOS,
-                                                                                            .tvOS,
-                                                                                            .watchOS]))]),
-                                .testTarget(name: "AlamofireTests",
-                                            dependencies: ["Alamofire"],
-                                            path: "Tests",
-                                            exclude: ["Info.plist", "Test Plans"],
-                                            resources: [.process("Resources")])],
-                      swiftLanguageVersions: [.v5])
+let package = Package(
+    name: "Alamofire",
+    platforms: [
+        .macOS(.v10_13),
+        .iOS(.v11),
+        .tvOS(.v11),
+        .watchOS(.v4)
+    ],
+    products: [
+        .library(
+            name: "Alamofire",
+            targets: ["Alamofire"]
+        )
+    ],
+    targets: [
+        .target(
+            name: "Alamofire",
+            path: "Source",
+            exclude: ["Info.plist"],
+            linkerSettings: [
+                .linkedFramework("CFNetwork", .when(platforms: [.iOS, .macOS, .tvOS, .watchOS]))
+            ],
+            swiftSettings: [
+                .unsafeFlags(["-enable-library-evolution"])
+            ]
+        ),
+        .testTarget(
+            name: "AlamofireTests",
+            dependencies: ["Alamofire"],
+            path: "Tests",
+            exclude: ["Info.plist", "Test Plans"],
+            resources: [
+                .process("Resources")
+            ]
+        )
+    ],
+    swiftLanguageVersions: [
+        .v5
+    ]
+)
